@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/controller/home_controller.dart';
 import 'package:untitled/utils/util_helper.dart';
-
 import '../const/app_constants.dart';
 
 class MoveableStackItem extends StatefulWidget {
@@ -37,7 +36,6 @@ class _MoveableStackItemState extends State<MoveableStackItem> {
 
   @override
   Widget build(BuildContext context) {
-    print('position[${widget.index}]: ${homeController.positionList[widget.index] + xPosition}');
     return Obx(() => AnimatedPositioned(
           left: homeController.positionList[widget.index] + xPosition,
           // widget.defaultPosition + xPosition,
@@ -47,8 +45,6 @@ class _MoveableStackItemState extends State<MoveableStackItem> {
             alignment: Alignment.bottomCenter,
             child: GestureDetector(
               onPanUpdate: (tapInfo) {
-                print('onPanUpdate');
-
                 if ((UtilHelper.getHeight(context) - 185) > yPosition) {
                   if (!isUpdateCalled) {
                     homeController.updateIconPosition(widget.index);
