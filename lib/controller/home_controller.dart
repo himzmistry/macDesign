@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../const/app_constants.dart';
+
 class HomeController extends GetxController {
   RxList<double> positionList = <double>[].obs;
   RxDouble bgWidth = 0.0.obs;
@@ -19,7 +21,7 @@ class HomeController extends GetxController {
       if (i < index) {
         positionList[i] = positionList[i] + 38;
       } else {
-        positionList[i] = positionList[i] - 38;
+        positionList[i] = positionList[i] - 40;
       }
     }
   }
@@ -27,6 +29,9 @@ class HomeController extends GetxController {
   resetPosition() {
     double defaultPosition = 0.0;
     for (int i = 0; i < positionList.length; i++) {
+      if (i == 0) {
+        defaultPosition = defaultPosition + xDefPosition;
+      }
       positionList[i] = defaultPosition;
       defaultPosition = defaultPosition + 80.0;
     }

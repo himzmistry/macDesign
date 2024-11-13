@@ -22,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      homeController.setBgWidth(UtilHelper.getWidth(context));
+      // homeController.setBgWidth(bgContainerWidth);
+      homeController.setBgWidth(bgContainerWidth);
       setPosition();
     });
     // TODO: implement initState
@@ -49,18 +50,16 @@ class _HomeScreenState extends State<HomeScreen> {
           body: loading
               ? Align(alignment: Alignment.center, child: const CircularProgressIndicator())
               : Obx(() => Container(
-                    alignment: Alignment.bottomCenter,
                     height: UtilHelper.getHeight(context),
                     width: UtilHelper.getWidth(context),
                     child: Stack(
-                      alignment: Alignment.bottomCenter,
                       children: [
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: bgContainer(),
                         ),
                         for (int i = 0; i < homeController.movableItems.length; i++) ...[
-                          homeController.movableItems[i],
+                          homeController.movableItems[i]
                         ],
                       ],
                     ),

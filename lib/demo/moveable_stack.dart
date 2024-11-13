@@ -28,7 +28,7 @@ class _MoveableStackItemState extends State<MoveableStackItem> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      yPosition = UtilHelper.getHeight(context) - 100;
+      yPosition = UtilHelper.getHeight(context) - yDefPosition;
       setState(() {});
     });
     super.initState();
@@ -36,55 +36,54 @@ class _MoveableStackItemState extends State<MoveableStackItem> {
 
   @override
   Widget build(BuildContext context) {
+    print('height: ${UtilHelper.getHeight(context)}');
+    print('width: ${UtilHelper.getWidth(context)}');
     return Obx(() => AnimatedPositioned(
           left: homeController.positionList[widget.index] + xPosition,
           // widget.defaultPosition + xPosition,
           duration: Duration(milliseconds: homeController.isPanUp.value ? 100 : 300),
           top: yPosition,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: GestureDetector(
-              onPanUpdate: (tapInfo) {
-                if ((UtilHelper.getHeight(context) - 185) > yPosition) {
-                  if (!isUpdateCalled) {
-                    homeController.updateIconPosition(widget.index);
-                  }
-                  isUpdateCalled = true;
-                  homeController.bgWidth.value = UtilHelper.getWidth(context) - 60;
-                } else if ((UtilHelper.getHeight(context) - 125) < yPosition) {
-                  // homeController.updateIconPosition(widget.index);
-                  homeController.bgWidth.value = UtilHelper.getWidth(context);
+          child: GestureDetector(
+            onPanUpdate: (tapInfo) {
+              if ((UtilHelper.getHeight(context) - 185) > yPosition) {
+                if (!isUpdateCalled) {
+                  homeController.updateIconPosition(widget.index);
                 }
-                // homeController.bgWidth.value = homeController.bgWidth.value - counter;
-                homeController.isPanUp.value = true;
-                setState(() {
-                  xPosition += tapInfo.delta.dx;
-                  yPosition += tapInfo.delta.dy;
-                });
-              },
-              onPanEnd: (tapInfo) {
-                counter = 0;
-                homeController.setBgWidth(UtilHelper.getWidth(context));
-                xPosition = xDefPosition;
-                yPosition = UtilHelper.getHeight(context) - 100;
-                homeController.isPanUp.value = false;
-                homeController.resetPosition();
-                isUpdateCalled = false;
-                setState(() {});
-              },
-              onPanStart: (tapInfo) {
-                print('onPanStart');
-              },
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    color: Colors.blueGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(12)),
-                child: const Icon(
-                  Icons.abc_outlined,
-                  color: Colors.white,
-                  size: 40,
-                ),
+                isUpdateCalled = true;
+                homeController.bgWidth.value = bgContainerWidth - bgContainerOffset;
+              } else if ((UtilHelper.getHeight(context) - 125) < yPosition) {
+                // homeController.updateIconPosition(widget.index);
+                // homeController.bgWidth.value = bgContainerWidth;
+              }
+              // homeController.bgWidth.value = homeController.bgWidth.value - counter;
+              homeController.isPanUp.value = true;
+              setState(() {
+                xPosition += tapInfo.delta.dx;
+                yPosition += tapInfo.delta.dy;
+              });
+            },
+            onPanEnd: (tapInfo) {
+              counter = 0;
+              homeController.setBgWidth(bgContainerWidth);
+              xPosition = xDefPosition;
+              yPosition = UtilHelper.getHeight(context) - yDefPosition;
+              homeController.isPanUp.value = false;
+              homeController.resetPosition();
+              isUpdateCalled = false;
+              setState(() {});
+            },
+            onPanStart: (tapInfo) {
+              print('onPanStart');
+            },
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                  color: Colors.blueGrey.withOpacity(0.8), borderRadius: BorderRadius.circular(12)),
+              child: const Icon(
+                Icons.abc_outlined,
+                color: Colors.white,
+                size: 40,
               ),
             ),
           ),
